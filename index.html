@@ -38,7 +38,7 @@
                 linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-            z-index: -2;
+            z-index: -3;
         }
 
         /* 背景光暈 */
@@ -46,18 +46,96 @@
             position: fixed;
             border-radius: 50%;
             filter: blur(120px);
-            z-index: -1;
+            z-index: -2;
             opacity: 0.15;
+            animation: orbFloat 12s ease-in-out infinite alternate;
         }
-        .glow-orb-1 { width: 600px; height: 600px; background: #00e5ff; top: -200px; left: -100px; }
-        .glow-orb-2 { width: 500px; height: 500px; background: #b388ff; bottom: -200px; right: -100px; }
-        .glow-orb-3 { width: 400px; height: 400px; background: #00e676; bottom: 100px; left: 30%; }
+        .glow-orb-1 { width: 600px; height: 600px; background: #0055ff; top: -200px; left: -100px; animation-delay: 0s; }
+        .glow-orb-2 { width: 500px; height: 500px; background: #0088ff; bottom: -200px; right: -100px; animation-delay: -4s; }
+        .glow-orb-3 { width: 400px; height: 400px; background: #00aaff; bottom: 100px; left: 30%; animation-delay: -8s; }
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -20px) scale(1.1); }
+            100% { transform: translate(-20px, 30px) scale(0.95); }
+        }
 
         /* 粒子畫布 */
         #particle-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.4;
+            z-index: -1;
+        }
+
+        /* 故障掃描線 */
+        .glitch-scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 100, 255, 0.008) 2px,
+                rgba(0, 100, 255, 0.008) 4px
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 隨機故障閃爍 */
+        .glitch-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: screen;
+        }
+        .glitch-overlay.flash {
+            animation: glitchFlash 0.15s steps(2) forwards;
+        }
+        @keyframes glitchFlash {
+            0% { opacity: 0; }
+            20% { opacity: 1; background: linear-gradient(90deg, transparent 30%, rgba(0,100,255,0.08) 30.5%, transparent 31%); }
+            40% { opacity: 0; }
+            60% { opacity: 1; background: linear-gradient(0deg, transparent 60%, rgba(0,200,255,0.05) 60.5%, transparent 61%); }
+            80% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* 標題故障效果 */
+        .glitch-text {
+            position: relative;
+        }
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+        }
+        .glitch-text::before {
+            color: #ff0040;
+            z-index: -1;
+        }
+        .glitch-text::after {
+            color: #00e5ff;
+            z-index: -1;
+        }
+        .glitch-text.active::before {
+            animation: glitchBefore 0.2s steps(3) forwards;
+        }
+        .glitch-text.active::after {
+            animation: glitchAfter 0.2s steps(3) forwards;
+        }
+        @keyframes glitchBefore {
+            0% { opacity: 0.8; transform: translate(-3px, 1px); clip-path: inset(20% 0 60% 0); }
+            50% { opacity: 0.6; transform: translate(2px, -1px); clip-path: inset(50% 0 20% 0); }
+            100% { opacity: 0; transform: translate(0); }
+        }
+        @keyframes glitchAfter {
+            0% { opacity: 0.8; transform: translate(3px, -1px); clip-path: inset(60% 0 10% 0); }
+            50% { opacity: 0.6; transform: translate(-2px, 1px); clip-path: inset(10% 0 70% 0); }
+            100% { opacity: 0; transform: translate(0); }
         }
 
         /* 科目卡片 */
@@ -135,13 +213,9 @@
         .subject-card:hover .scanline { opacity: 0.6; }
         @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
 
-        /* 生物 */
         .card-bio { --accent: #00e676; --glow: rgba(0, 230, 118, 0.3); --icon-bg: rgba(0, 230, 118, 0.08); }
-        /* 化學 */
         .card-chem { --accent: #b388ff; --glow: rgba(179, 136, 255, 0.3); --icon-bg: rgba(179, 136, 255, 0.08); }
-        /* 物理 */
         .card-phys { --accent: #00e5ff; --glow: rgba(0, 229, 255, 0.3); --icon-bg: rgba(0, 229, 255, 0.08); }
-        /* 地科 */
         .card-earth { --accent: #ffd740; --glow: rgba(255, 215, 64, 0.3); --icon-bg: rgba(255, 215, 64, 0.08); }
 
         /* 進場動畫 */
@@ -179,6 +253,8 @@
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
     <div class="glow-orb glow-orb-3"></div>
+    <div class="glitch-scanlines"></div>
+    <div class="glitch-overlay" id="glitchOverlay"></div>
     <canvas id="particle-canvas"></canvas>
 
     <!-- Header -->
@@ -188,7 +264,7 @@
             <span class="orbitron text-xs tracking-[0.4em] text-cyan-500 uppercase">Natural Science Review</span>
             <div class="h-px w-12 bg-gradient-to-l from-transparent to-cyan-500"></div>
         </div>
-        <h1 class="orbitron text-5xl md:text-7xl font-black tracking-wider text-white mb-3">
+        <h1 class="orbitron text-5xl md:text-7xl font-black tracking-wider text-white mb-3 glitch-text" data-text="SCIENCE CORE">
             SCIENCE <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">CORE</span>
         </h1>
         <p class="text-cyan-200/70 tracking-[0.5em] uppercase text-lg md:text-xl font-bold">
@@ -269,46 +345,92 @@
     <div class="bottom-line"></div>
 
     <script>
+        /* ===== 粒子系統（增強版） ===== */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let mouse = { x: null, y: null };
+
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
+        window.addEventListener('resize', () => { resize(); init(); });
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
         resize();
+
         class Particle {
             constructor() {
+                this.reset();
+            }
+            reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.baseSize = Math.random() * 2 + 0.5;
+                this.size = this.baseSize;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                // 深藍色系隨機色調
+                const hue = 200 + Math.random() * 40; // 200-240 深藍範圍
+                const light = 50 + Math.random() * 30;
+                this.color = `hsla(${hue}, 100%, ${light}%, `;
+                this.pulse = Math.random() * Math.PI * 2;
+                this.pulseSpeed = 0.02 + Math.random() * 0.02;
             }
             update() {
-                this.x += this.speedX; this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0; else if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0; else if (this.y < 0) this.y = canvas.height;
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.pulse += this.pulseSpeed;
+                this.size = this.baseSize + Math.sin(this.pulse) * 0.5;
+
+                // 滑鼠互動：靠近時粒子微微排斥
+                if (mouse.x !== null) {
+                    const dx = this.x - mouse.x;
+                    const dy = this.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        const force = (150 - dist) / 150 * 0.3;
+                        this.x += (dx / dist) * force;
+                        this.y += (dy / dist) * force;
+                    }
+                }
+
+                if (this.x > canvas.width + 10) this.x = -10;
+                else if (this.x < -10) this.x = canvas.width + 10;
+                if (this.y > canvas.height + 10) this.y = -10;
+                else if (this.y < -10) this.y = canvas.height + 10;
             }
             draw() {
-                ctx.fillStyle = 'rgba(0, 229, 255, 0.35)';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                const alpha = 0.3 + Math.sin(this.pulse) * 0.15;
+                ctx.fillStyle = this.color + alpha + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                // 粒子光暈
+                ctx.fillStyle = this.color + (alpha * 0.3) + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
+
         function init() {
             particles = [];
-            const count = Math.min(Math.floor(window.innerWidth / 12), 80);
+            const count = Math.min(Math.floor((canvas.width * canvas.height) / 8000), 150);
             for (let i = 0; i < count; i++) particles.push(new Particle());
         }
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
+
+            // 連線
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 130) {
-                        ctx.strokeStyle = `rgba(0, 229, 255, ${0.08 * (1 - dist / 130)})`;
-                        ctx.lineWidth = 0.5;
+                    if (dist < 160) {
+                        const alpha = 0.12 * (1 - dist / 160);
+                        ctx.strokeStyle = `rgba(0, 120, 255, ${alpha})`;
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -316,9 +438,49 @@
                     }
                 }
             }
+
+            // 滑鼠附近畫額外連線
+            if (mouse.x !== null) {
+                particles.forEach(p => {
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 200) {
+                        const alpha = 0.2 * (1 - dist / 200);
+                        ctx.strokeStyle = `rgba(0, 180, 255, ${alpha})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                });
+            }
+
             requestAnimationFrame(animate);
         }
-        init(); animate();
+        init();
+        animate();
+
+        /* ===== 故障特效 ===== */
+        const glitchOverlay = document.getElementById('glitchOverlay');
+        const glitchTitle = document.querySelector('.glitch-text');
+
+        function triggerGlitch() {
+            // 畫面閃爍
+            glitchOverlay.classList.remove('flash');
+            void glitchOverlay.offsetWidth;
+            glitchOverlay.classList.add('flash');
+
+            // 標題故障
+            glitchTitle.classList.remove('active');
+            void glitchTitle.offsetWidth;
+            glitchTitle.classList.add('active');
+
+            // 隨機下次觸發時間 3~8 秒
+            setTimeout(triggerGlitch, 3000 + Math.random() * 5000);
+        }
+        setTimeout(triggerGlitch, 2000);
     </script>
 </body>
 </html>
