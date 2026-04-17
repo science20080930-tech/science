@@ -6,111 +6,87 @@
     <title>Physics - 物理複習目錄</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@300;500;700&display=swap');
-        body {
-            background-color: #060b28;
-            color: #e0e0e0;
-            font-family: 'Noto Sans TC', sans-serif;
-            margin: 0;
-            overflow-x: hidden;
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        :root {
+            --bg: #050a1a;
+            --accent: #00e5ff;
+            --accent-dim: rgba(0, 229, 255, 0.15);
+            --card-bg: rgba(10, 15, 40, 0.85);
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: #e0e0e0; font-family: 'Noto Sans TC', sans-serif; overflow-x: hidden; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0,229,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px; z-index: -2;
+        }
+        .glow-orb {
+            position: fixed; border-radius: 50%; filter: blur(120px); z-index: -1; opacity: 0.12;
+            width: 500px; height: 500px; background: var(--accent); top: -150px; right: -100px;
+        }
         .glass-panel {
-            background: rgba(16, 20, 50, 0.7);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+            background: var(--card-bg); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06); border-radius: 20px;
         }
-        .nav-item {
-            position: relative;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            border-left: 3px solid transparent;
-            background: rgba(255, 255, 255, 0.03);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .nav-item:hover {
-            border-left-color: #00f3ff;
-            background: rgba(0, 243, 255, 0.1);
-            padding-left: 1.5rem;
-        }
-        .status-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: #00f3ff;
-            display: inline-block;
-            margin-right: 10px;
-            box-shadow: 0 0 10px #00f3ff;
-        }
+        .nav-container { min-height: 200px; }
         .return-btn {
-            border: 1px solid rgba(0, 243, 255, 0.5);
-            transition: all 0.3s;
+            border: 1px solid rgba(0,229,255,0.3); transition: all 0.3s;
+            backdrop-filter: blur(10px); background: rgba(0,229,255,0.05);
         }
         .return-btn:hover {
-            background: rgba(0, 243, 255, 0.2);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            background: rgba(0,229,255,0.15); box-shadow: 0 0 20px rgba(0,229,255,0.3);
+            border-color: var(--accent);
         }
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="p-4 md:p-10">
-    <div class="fixed top-0 left-0 w-full h-full -z-10 opacity-20" style="background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, transparent 70%);"></div>
-
-    <div class="max-w-6xl mx-auto">
+    <div class="grid-bg"></div>
+    <div class="glow-orb"></div>
+    <div class="max-w-6xl mx-auto fade-in">
         <div class="flex justify-between items-center mb-10">
-            <a href="../../index.html" class="return-btn px-8 py-2 rounded-full orbitron text-sm tracking-[0.2em] text-cyan-400 flex items-center">
-                <svg class="mr-2" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <a href="../../index.html" class="return-btn px-6 py-2.5 rounded-full orbitron text-xs tracking-[0.2em] text-cyan-400 flex items-center gap-2">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 HOME
             </a>
-            <div class="text-right">
-                <h1 class="orbitron text-3xl font-bold text-white tracking-tighter">PHYSICS <span class="text-cyan-400">DATA</span></h1>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--accent-dim); border: 1px solid var(--accent);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="2"/>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(0 12 12)"/>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+                    </svg>
+                </div>
+                <h1 class="orbitron text-2xl md:text-3xl font-bold text-white tracking-tight">PHYSICS <span class="text-cyan-400">DATA</span></h1>
             </div>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-1">
                 <div class="glass-panel p-6">
-                    <h3 class="orbitron text-lg font-bold text-cyan-400 mb-6 flex items-center">
-                        <svg class="mr-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+                    <h3 class="orbitron text-sm font-bold text-cyan-400 mb-6 flex items-center gap-2 tracking-wider">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
                         物理目錄
                     </h3>
                     <div class="nav-container">
-                        <div class="nav-item">
-                            <span class="status-dot"></span>
-                            <span class="font-medium text-lg">直線運動與力學</span>
-                        </div>
-                        <div class="nav-item">
-                            <span class="status-dot"></span>
-                            <span class="font-medium text-lg">能量、功與動量</span>
-                        </div>
-                        <div class="nav-item">
-                            <span class="status-dot"></span>
-                            <span class="font-medium text-lg">熱能與氣體分子</span>
-                        </div>
-                        <div class="nav-item">
-                            <span class="status-dot"></span>
-                            <span class="font-medium text-lg">波動、聲音與光學</span>
-                        </div>
-                        <div class="nav-item">
-                            <span class="status-dot"></span>
-                            <span class="font-medium text-lg">電磁學基礎</span>
-                        </div>
-                        <div class="nav-item">
-                            <span class="status-dot"></span>
-                            <span class="font-medium text-lg">量子物理與原子結構</span>
-                        </div>
+                        <!-- 章節項目將在新增對應網頁後加入 -->
                     </div>
                 </div>
             </div>
-
             <div class="lg:col-span-2">
                 <div class="glass-panel p-8 h-full min-h-[500px] flex flex-col justify-center items-center text-center">
-                    <div class="mb-6 opacity-20">
-                        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#00f3ff" stroke-width="0.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <div class="mb-6 opacity-15">
+                        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(0 12 12)"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+                        </svg>
                     </div>
-                    <h2 class="orbitron text-2xl font-bold text-white mb-2">請選擇物理章節</h2>
-                    <p class="text-cyan-600 max-w-md">選擇左側章節以進入深入複習模組。</p>
+                    <h2 class="orbitron text-xl font-bold text-white mb-2">請選擇物理章節</h2>
+                    <p class="text-cyan-400/40 text-sm max-w-md">選擇左側章節以進入深入複習模組。</p>
                 </div>
             </div>
         </div>
