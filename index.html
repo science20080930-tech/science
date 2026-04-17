@@ -238,6 +238,51 @@
             opacity: 0;
             transform: translateY(20px);
             animation: fadeUp 1s ease-out forwards;
+            position: relative;
+        }
+
+        /* 標題 Glitch 特效 */
+        .glitch-title {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
+        }
+        .glitch-title::before {
+            color: #ff0040;
+            z-index: -1;
+            animation: glitchTitleBefore 0.3s steps(4) infinite;
+        }
+        .glitch-title::after {
+            color: #00e5ff;
+            z-index: -2;
+            animation: glitchTitleAfter 0.3s steps(4) infinite;
+        }
+        @keyframes glitchTitleBefore {
+            0% { opacity: 0; clip-path: inset(0 0 0 0); }
+            20% { opacity: 0.8; clip-path: inset(30% 0 50% 0); transform: translate(-2px, 1px); }
+            40% { opacity: 0; clip-path: inset(0 0 0 0); }
+            60% { opacity: 0.8; clip-path: inset(10% 0 80% 0); transform: translate(2px, -1px); }
+            100% { opacity: 0; clip-path: inset(0 0 0 0); }
+        }
+        @keyframes glitchTitleAfter {
+            0% { opacity: 0; clip-path: inset(0 0 0 0); }
+            20% { opacity: 0.8; clip-path: inset(50% 0 30% 0); transform: translate(2px, -1px); }
+            40% { opacity: 0; clip-path: inset(0 0 0 0); }
+            60% { opacity: 0.8; clip-path: inset(80% 0 10% 0); transform: translate(-2px, 1px); }
+            100% { opacity: 0; clip-path: inset(0 0 0 0); }
         }
 
         /* 底部裝飾線 */
@@ -265,7 +310,7 @@
             <span class="orbitron text-xs tracking-[0.4em] text-cyan-500 uppercase">Natural Science Review</span>
             <div class="h-px w-12 bg-gradient-to-l from-transparent to-cyan-500"></div>
         </div>
-        <h1 class="orbitron text-5xl md:text-7xl font-black tracking-wider text-white mb-3 glitch-text" data-text="SCIENCE CORE">
+        <h1 class="orbitron text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-wider text-white mb-3 glitch-text glitch-title" data-text="SCIENCE CORE">
             SCIENCE <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">CORE</span>
         </h1>
         <p class="text-cyan-200/70 tracking-[0.5em] uppercase text-lg md:text-xl font-bold">
@@ -275,10 +320,10 @@
     </header>
 
     <!-- 科目卡片 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full max-w-6xl px-2 sm:px-0">
 
         <!-- 生物 -->
-        <a href="./目錄頁/biology/biology.html" class="subject-card card-bio fade-up">
+        <a href="./目錄頁/biology/biology.html" class="subject-card card-bio fade-up h-full">
             <div class="scanline"></div>
             <div class="icon-ring">
                 <svg viewBox="0 0 24 24">
@@ -296,7 +341,7 @@
         </a>
 
         <!-- 化學 -->
-        <a href="./目錄頁/chemistry/chemistry.html" class="subject-card card-chem fade-up">
+        <a href="./目錄頁/chemistry/chemistry.html" class="subject-card card-chem fade-up h-full">
             <div class="scanline"></div>
             <div class="icon-ring">
                 <svg viewBox="0 0 24 24">
@@ -312,7 +357,7 @@
         </a>
 
         <!-- 物理 -->
-        <a href="./目錄頁/physics/physics.html" class="subject-card card-phys fade-up">
+        <a href="./目錄頁/physics/physics.html" class="subject-card card-phys fade-up h-full">
             <div class="scanline"></div>
             <div class="icon-ring">
                 <svg viewBox="0 0 24 24">
@@ -327,7 +372,7 @@
         </a>
 
         <!-- 地科 -->
-        <a href="./目錄頁/earth/earth.html" class="subject-card card-earth fade-up">
+        <a href="./目錄頁/earth/earth.html" class="subject-card card-earth fade-up h-full">
             <div class="scanline"></div>
             <div class="icon-ring">
                 <svg viewBox="0 0 24 24">
@@ -341,6 +386,10 @@
             <h2 class="text-2xl font-bold text-white tracking-tight">地科</h2>
             <span class="orbitron text-[10px] tracking-[0.3em] opacity-50" style="color: var(--accent);">EARTH SCIENCE</span>
         </a>
+    </div>
+
+    <div class="flex justify-center mt-12 mb-6">
+        <div class="orbitron text-xs tracking-[0.2em] text-cyan-500/60">invented by 䳦</div>
     </div>
 
     <div class="bottom-line"></div>
