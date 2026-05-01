@@ -30,6 +30,7 @@
             height: 42px;
             filter: blur(1.6px);
             z-index: 9999;
+            transform-origin: 74px 21px;
         }
 
         .polaris-cursor.is-visible,
@@ -132,8 +133,24 @@
     let mouseY = window.innerHeight / 2;
     let tailX = mouseX;
     let tailY = mouseY;
+    let previousMouseX = mouseX;
+    let previousMouseY = mouseY;
+    let tailAngle = 0;
+    let targetTailAngle = 0;
+
+    function shortestAngleDelta(from, to) {
+        return Math.atan2(Math.sin(to - from), Math.cos(to - from));
+    }
 
     function moveCursor(event) {
+        const dx = event.clientX - previousMouseX;
+        const dy = event.clientY - previousMouseY;
+        if (Math.abs(dx) + Math.abs(dy) > 1.5) {
+            targetTailAngle = Math.atan2(dy, dx);
+            previousMouseX = event.clientX;
+            previousMouseY = event.clientY;
+        }
+
         mouseX = event.clientX;
         mouseY = event.clientY;
         cursor.classList.add('is-visible');
@@ -143,8 +160,9 @@
     function animateCursor() {
         tailX += (mouseX - tailX) * 0.22;
         tailY += (mouseY - tailY) * 0.22;
+        tailAngle += shortestAngleDelta(tailAngle, targetTailAngle) * 0.16;
         cursor.style.transform = `translate(${mouseX - 16}px, ${mouseY - 16}px)`;
-        tail.style.transform = `translate(${tailX - 74}px, ${tailY - 21}px)`;
+        tail.style.transform = `translate(${tailX - 74}px, ${tailY - 21}px) rotate(${tailAngle}rad)`;
         requestAnimationFrame(animateCursor);
     }
 
