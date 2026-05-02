@@ -1,0 +1,7 @@
+@media (pointer: fine) {
+    html,
+    body,
+    body * {
+        cursor: none !important;
+    }
+}
