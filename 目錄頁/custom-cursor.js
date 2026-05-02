@@ -1,5 +1,67 @@
 (function() {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
+    function createStarSvg(className, gradientId) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', className);
+        svg.setAttribute('viewBox', '0 0 32 32');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.innerHTML = `
+            <defs>
+                <radialGradient id="${gradientId}" cx="50%" cy="50%" r="50%">
+                    <stop offset="0" stop-color="#ffffff"/>
+                    <stop offset="0.45" stop-color="#ddffff"/>
+                    <stop offset="0.78" stop-color="#7effe7" stop-opacity="0.82"/>
+                    <stop offset="1" stop-color="#7effe7" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+            <g class="polaris-star-core">
+                <circle cx="16" cy="16" r="10" fill="url(#${gradientId})" opacity="0.72"/>
+                <path d="M16 1.5 L18.3 13.7 L30.5 16 L18.3 18.3 L16 30.5 L13.7 18.3 L1.5 16 L13.7 13.7 Z" fill="#ffffff"/>
+                <path d="M16 7.5 L17.6 14.4 L24.5 16 L17.6 17.6 L16 24.5 L14.4 17.6 L7.5 16 L14.4 14.4 Z" fill="#76ffe2" opacity="0.9"/>
+                <circle cx="16" cy="16" r="2.1" fill="#ffffff"/>
+            </g>
+        `;
+        return svg;
+    }
+
+    if (isTouchDevice) {
+        const touchStyle = document.createElement('style');
+        touchStyle.textContent = `
+            .polaris-tap {
+                position: fixed;
+                width: 34px;
+                height: 34px;
+                pointer-events: none;
+                z-index: 10000;
+                mix-blend-mode: screen;
+                filter: drop-shadow(0 0 10px rgba(173, 255, 244, 0.95));
+                animation: polarisTap 0.58s ease-out forwards;
+            }
+
+            .polaris-star-core {
+                transform-origin: 16px 16px;
+            }
+
+            @keyframes polarisTap {
+                0% { opacity: 0; transform: scale(0.45); }
+                22% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(1.65); }
+            }
+        `;
+        document.head.appendChild(touchStyle);
+
+        let tapId = 0;
+        window.addEventListener('pointerdown', event => {
+            const tap = createStarSvg('polaris-tap', `starCoreTap${tapId++}`);
+            tap.style.left = `${event.clientX - 17}px`;
+            tap.style.top = `${event.clientY - 17}px`;
+            document.body.appendChild(tap);
+            tap.addEventListener('animationend', () => tap.remove(), { once: true });
+        }, { passive: true });
+
+        return;
+    }
 
     const style = document.createElement('style');
     style.textContent = `
@@ -47,26 +109,7 @@
     `;
     document.head.appendChild(style);
 
-    const cursor = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    cursor.setAttribute('class', 'polaris-cursor');
-    cursor.setAttribute('viewBox', '0 0 32 32');
-    cursor.setAttribute('aria-hidden', 'true');
-    cursor.innerHTML = `
-        <defs>
-            <radialGradient id="starCore" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stop-color="#ffffff"/>
-                <stop offset="0.45" stop-color="#ddffff"/>
-                <stop offset="0.78" stop-color="#7effe7" stop-opacity="0.82"/>
-                <stop offset="1" stop-color="#7effe7" stop-opacity="0"/>
-            </radialGradient>
-        </defs>
-        <g class="polaris-star-core">
-            <circle cx="16" cy="16" r="10" fill="url(#starCore)" opacity="0.72"/>
-            <path d="M16 1.5 L18.3 13.7 L30.5 16 L18.3 18.3 L16 30.5 L13.7 18.3 L1.5 16 L13.7 13.7 Z" fill="#ffffff"/>
-            <path d="M16 7.5 L17.6 14.4 L24.5 16 L17.6 17.6 L16 24.5 L14.4 17.6 L7.5 16 L14.4 14.4 Z" fill="#76ffe2" opacity="0.9"/>
-            <circle cx="16" cy="16" r="2.1" fill="#ffffff"/>
-        </g>
-    `;
+    const cursor = createStarSvg('polaris-cursor', 'starCoreCursor');
 
     document.body.appendChild(cursor);
 
