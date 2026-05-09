@@ -62,14 +62,16 @@
             backdrop-filter: blur(18px);
         }
         .comparison-scroll {
-            overflow-x: auto;
+            overflow-x: visible;
             padding-bottom: .35rem;
         }
         .comparison-grid {
             display: grid;
-            grid-template-columns: minmax(560px, 1fr) minmax(560px, 1fr);
+            grid-template-columns: minmax(0, 1fr);
             gap: 1.5rem;
-            min-width: 1160px;
+            min-width: 0;
+            max-width: 1320px;
+            margin: 0 auto;
             align-items: start;
         }
         .diagram-card {
@@ -186,7 +188,7 @@
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
 
-    <main class="max-w-7xl mx-auto fade-in">
+    <main class="max-w-[1500px] mx-auto fade-in">
         <nav class="flex items-center justify-between gap-4 mb-8">
             <a href="../biology.html" class="return-btn px-5 py-2.5 rounded-full orbitron text-xs tracking-[0.2em] text-green-300 flex items-center gap-2">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -202,18 +204,18 @@
             </div>
             <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-5">細胞構造</h1>
             <p class="text-green-100/75 text-base md:text-lg leading-8 max-w-4xl">
-                以動物細胞與植物細胞的構造圖做左右對比，重點放在學測常考的構造差異與功能判斷。
+                以動物細胞與植物細胞的構造圖做分段對比，重點放在學測常考的構造差異與功能判斷。
             </p>
         </section>
 
-        <section class="comparison-scroll mb-6" aria-label="動物細胞與植物細胞左右對比">
+        <section class="comparison-scroll mb-6" aria-label="動物細胞與植物細胞分段對比">
             <div class="comparison-grid">
                 <article class="diagram-card">
                     <div class="p-5 border-b border-white/10">
                         <h2 class="orbitron text-xl font-bold text-white">ANIMAL CELL <span class="text-green-300">動物細胞</span></h2>
                     </div>
                     <div class="image-frame">
-                        <img class="cell-diagram-image" src="assets/animal-cell.png" alt="動物細胞構造圖，標示細胞膜、細胞質、小液泡、粒線體、中心體、細胞核、核仁、粗糙內質網、平滑內質網、高基氏體與核糖體">
+                        <img class="cell-diagram-image" src="assets/animal-cell.png?v=20260510-user-images" alt="動物細胞構造圖，標示細胞膜、細胞質、小液泡、粒線體、中心體、細胞核、核仁、粗糙內質網、平滑內質網、高基氏體與核糖體">
                     </div>
                     <div class="p-5">
                         <div class="section-title orbitron mb-4">比較項目</div>
@@ -251,7 +253,7 @@
                         <h2 class="orbitron text-xl font-bold text-white">PLANT CELL <span class="text-green-300">植物細胞</span></h2>
                     </div>
                     <div class="image-frame">
-                        <img class="cell-diagram-image" src="assets/plant-cell.png" alt="植物細胞構造圖，標示細胞壁、細胞膜、細胞質、中央大液泡、葉綠體、粒線體、細胞核、核仁、粗糙內質網、平滑內質網、高基氏體與核糖體">
+                        <img class="cell-diagram-image" src="assets/plant-cell.png?v=20260510-plant-final" alt="植物細胞構造圖，標示細胞壁、細胞膜、細胞質、中央大液泡、葉綠體、粒線體、細胞核、核仁、粗糙內質網、平滑內質網、高基氏體與核糖體">
                     </div>
                     <div class="p-5">
                         <div class="section-title orbitron mb-4">比較項目</div>
