@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biology - 生物複習目錄</title>
+    <title>Biology - 生物筆記</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../custom-cursor.css">
     <link rel="stylesheet" href="../mobile-layout.css">
@@ -13,21 +13,30 @@
             --bg: #050a1a;
             --accent: #00e676;
             --accent-dim: rgba(0, 230, 118, 0.15);
-            --card-bg: rgba(10, 15, 40, 0.85);
+            --card-bg: rgba(10, 15, 40, 0.86);
+            --line: rgba(157, 255, 214, 0.22);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: #e0e0e0; font-family: 'Noto Sans TC', sans-serif; overflow-x: hidden; }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 75% 0%, rgba(0, 230, 118, 0.14), transparent 34%), var(--bg);
+            color: #e0e0e0;
+            font-family: 'Noto Sans TC', sans-serif;
+            overflow-x: hidden;
+        }
         .orbitron { font-family: 'Orbitron', sans-serif; }
         .grid-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(0,230,118,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,230,118,0.02) 1px, transparent 1px);
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0,230,118,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,230,118,0.02) 1px, transparent 1px);
             background-size: 60px 60px; z-index: -2;
         }
         .glow-orb {
             position: fixed; border-radius: 50%; filter: blur(120px); z-index: -2; opacity: 0.12;
             animation: orbFloat 12s ease-in-out infinite alternate;
         }
-        .glow-orb-1 { width: 500px; height: 500px; background: #0055ff; top: -150px; right: -100px; }
+        .glow-orb-1 { width: 500px; height: 500px; background: #00e676; top: -150px; right: -100px; }
         .glow-orb-2 { width: 400px; height: 400px; background: #0088ff; bottom: -150px; left: -100px; animation-delay: -4s; }
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
@@ -35,35 +44,117 @@
             100% { transform: translate(-20px, 30px) scale(0.95); }
         }
         .glass-panel {
-            background: var(--card-bg); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.06); border-radius: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
         }
-        .nav-container { min-height: 200px; }
         .return-btn {
-            border: 1px solid rgba(0,230,118,0.3); transition: all 0.3s;
-            backdrop-filter: blur(10px); background: rgba(0,230,118,0.05);
+            border: 1px solid rgba(0,230,118,0.3);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            background: rgba(0,230,118,0.05);
         }
         .return-btn:hover {
-            background: rgba(0,230,118,0.15); box-shadow: 0 0 20px rgba(0,230,118,0.3);
+            background: rgba(0,230,118,0.15);
+            box-shadow: 0 0 20px rgba(0,230,118,0.3);
             border-color: var(--accent);
+        }
+        .note-list {
+            display: grid;
+            gap: .9rem;
+        }
+        .note-item {
+            width: 100%;
+            text-align: left;
+            border: 1px solid rgba(0,230,118,0.16);
+            background: rgba(0,230,118,0.055);
+            border-radius: 16px;
+            padding: 1rem;
+            transition: all .25s ease;
+            color: inherit;
+        }
+        .note-item:hover,
+        .note-item.is-active {
+            border-color: var(--accent);
+            background: rgba(0,230,118,0.13);
+            box-shadow: 0 0 24px rgba(0,230,118,.22);
+            transform: translateY(-2px);
+        }
+        .note-item.is-active {
+            outline: 1px solid rgba(156,255,223,.26);
+        }
+        .preview-card {
+            border: 1px solid rgba(0,230,118,0.18);
+            background: linear-gradient(180deg, rgba(13, 31, 55, .92), rgba(7, 14, 31, .92));
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .preview-shell {
+            height: 560px;
+            background: #041021;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        .preview-viewport {
+            position: absolute;
+            inset: 0;
+            width: 125%;
+            height: 125%;
+            transform: scale(.8);
+            transform-origin: top left;
+            border: 0;
+            background: #050a1a;
+            pointer-events: none;
+        }
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(156,255,223,.12);
+            pointer-events: none;
+        }
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .65rem;
+        }
+        .meta-chip {
+            border: 1px solid rgba(0,230,118,.24);
+            background: rgba(0,230,118,.06);
+            color: rgba(214,255,236,.82);
+            border-radius: 999px;
+            padding: .35rem .75rem;
+            font-size: .76rem;
+            letter-spacing: .08em;
         }
         .fade-in { animation: fadeIn 0.6s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px), (pointer: coarse) {
+            .preview-shell { height: 420px; }
+            .preview-viewport {
+                width: 150%;
+                height: 150%;
+                transform: scale(.667);
+            }
+        }
     </style>
 </head>
 <body class="p-4 md:p-10">
     <div class="grid-bg"></div>
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
-    <div class="fixed top-6 right-6 orbitron text-xs tracking-[0.2em] text-green-400/60 z-50">invented by 䳦</div>
-    <div class="max-w-6xl mx-auto fade-in">
+    <div class="fixed top-6 right-6 orbitron text-xs tracking-[0.2em] text-green-400/60 z-50">invented by 科學</div>
+
+    <main class="max-w-6xl mx-auto fade-in">
         <div class="flex justify-between items-center mb-10">
             <a href="../../index.html" class="return-btn px-6 py-2.5 rounded-full orbitron text-xs tracking-[0.2em] text-green-400 flex items-center gap-2">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 HOME
             </a>
         </div>
-        <div class="flex justify-center mb-10">
+
+        <header class="flex justify-center mb-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--accent-dim); border: 1px solid var(--accent);">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -74,35 +165,98 @@
                 </div>
                 <h1 class="orbitron text-2xl md:text-3xl font-bold text-white tracking-tight">BIOLOGY <span class="text-green-400">DATA</span></h1>
             </div>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-            <div class="lg:col-span-1">
+        </header>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+            <aside class="lg:col-span-1">
                 <div class="glass-panel p-6">
-                    <h3 class="orbitron text-sm font-bold text-green-400 mb-6 flex items-center gap-2 tracking-wider">
+                    <h2 class="orbitron text-sm font-bold text-green-400 mb-6 flex items-center gap-2 tracking-wider">
                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-                        生物目錄
-                    </h3>
-                    <div class="nav-container">
-                        <!-- 章節項目將在新增對應網頁後加入 -->
-                    </div>
+                        生物筆記目錄
+                    </h2>
+                    <div class="note-list" id="noteList"></div>
                 </div>
-            </div>
-            <div class="lg:col-span-2">
-                <div class="glass-panel p-8 h-full min-h-[500px] flex flex-col justify-center items-center text-center">
-                    <div class="mb-6 opacity-15">
-                        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 2c0 4 2.5 6 5 8c-2.5 2-5 4-5 8"/>
-                            <path d="M16 2c0 4-2.5 6-5 8c2.5 2 5 4 5 8"/>
-                            <path d="M9 4h6"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h6"/><path d="M9 20h6"/>
-                        </svg>
-                    </div>
-                    <h2 class="orbitron text-xl font-bold text-white mb-2">請選擇生物章節</h2>
-                    <p class="text-green-400/40 text-sm max-w-md">選擇左側章節以進入深入複習模組。</p>
+            </aside>
+
+            <section class="lg:col-span-2">
+                <div class="glass-panel p-6 md:p-8 h-full min-h-[560px]">
+                    <article class="preview-card">
+                        <div class="p-5 border-b border-white/10">
+                            <div class="orbitron text-xs tracking-[0.22em] text-green-300/70 mb-2" id="previewCode">NOTE 01</div>
+                            <h2 class="text-3xl md:text-4xl font-black text-white" id="previewTitle">細胞構造</h2>
+                            <p class="text-green-100/65 leading-7 mt-3" id="previewDescription">動物細胞與植物細胞的構造圖左右對比，搭配功能差別整理。</p>
+                        </div>
+                        <div class="preview-shell" aria-label="筆記頁面縮圖預覽">
+                            <iframe class="preview-viewport" id="previewFrame" title="筆記頁面縮圖" src="生物筆記1/cell-structure.html"></iframe>
+                            <div class="preview-overlay"></div>
+                        </div>
+                        <div class="p-5 flex flex-col gap-4">
+                            <div class="meta-row" id="previewTags"></div>
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                <p class="text-green-100/70 leading-7">點左側筆記會切換這裡的完整頁面縮圖，按下 OPEN NOTE 進入正式頁面。</p>
+                                <a id="openNoteLink" href="生物筆記1/cell-structure.html" class="return-btn px-5 py-2.5 rounded-full orbitron text-xs tracking-[0.2em] text-green-300 text-center">OPEN NOTE</a>
+                            </div>
+                        </div>
+                    </article>
                 </div>
-            </div>
-        </div>
-    </div>
+            </section>
+        </section>
+    </main>
+
     <script src="../custom-cursor.js"></script>
     <script src="../bg-effects.js"></script>
+    <script>
+        const notes = [
+            {
+                code: 'NOTE 01',
+                title: '細胞構造',
+                description: '動物細胞與植物細胞的構造圖左右對比，搭配功能差別整理。',
+                url: '生物筆記1/cell-structure.html',
+                tags: ['細胞膜', '細胞核', '葉綠體', '功能差別']
+            }
+        ];
+
+        const noteList = document.getElementById('noteList');
+        const previewCode = document.getElementById('previewCode');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewDescription = document.getElementById('previewDescription');
+        const previewFrame = document.getElementById('previewFrame');
+        const previewTags = document.getElementById('previewTags');
+        const openNoteLink = document.getElementById('openNoteLink');
+
+        function renderTags(tags) {
+            previewTags.innerHTML = tags.map(tag => `<span class="meta-chip orbitron">${tag}</span>`).join('');
+        }
+
+        function selectNote(index) {
+            const note = notes[index];
+            previewCode.textContent = note.code;
+            previewTitle.textContent = note.title;
+            previewDescription.textContent = note.description;
+            previewFrame.src = note.url;
+            openNoteLink.href = note.url;
+            renderTags(note.tags);
+            document.querySelectorAll('.note-item').forEach((button, buttonIndex) => {
+                button.classList.toggle('is-active', buttonIndex === index);
+                button.setAttribute('aria-pressed', buttonIndex === index ? 'true' : 'false');
+            });
+        }
+
+        noteList.innerHTML = notes.map((note, index) => `
+            <button class="note-item ${index === 0 ? 'is-active' : ''}" type="button" data-note-index="${index}" aria-pressed="${index === 0 ? 'true' : 'false'}">
+                <div class="orbitron text-xs tracking-[0.22em] text-green-300/70 mb-2">${note.code}</div>
+                <div class="text-white text-xl font-bold mb-2">${note.title}</div>
+                <p class="text-green-100/60 text-sm leading-6">${note.description}</p>
+            </button>
+        `).join('');
+
+        noteList.addEventListener('click', event => {
+            const button = event.target.closest('.note-item');
+            if (!button) return;
+            selectNote(Number(button.dataset.noteIndex));
+        });
+
+        selectNote(0);
+    </script>
 </body>
 </html>
