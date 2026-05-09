@@ -135,11 +135,49 @@
         }
         .fade-in { animation: fadeIn .55s ease-out both; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        html.device-phone body,
+        html.device-tablet body {
+            touch-action: manipulation;
+        }
+        html.device-phone .comparison-scroll,
+        html.device-tablet .comparison-scroll {
+            overflow-x: visible;
+            padding-bottom: 0;
+        }
+        html.device-phone .comparison-grid,
+        html.device-tablet .comparison-grid {
+            min-width: 0;
+            width: 100%;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        html.device-tablet .comparison-grid {
+            gap: 1.25rem;
+        }
         @media (max-width: 768px) {
             body { padding: 1rem !important; }
             .panel { border-radius: 16px; }
             .compare-table th, .compare-table td { padding: .85rem; font-size: .92rem; }
-            .comparison-grid { min-width: 1040px; grid-template-columns: 1fr 1fr; }
+            .comparison-scroll {
+                overflow-x: visible;
+                padding-bottom: 0;
+            }
+            .comparison-grid {
+                min-width: 0;
+                width: 100%;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .diagram-card {
+                border-radius: 16px;
+            }
+            .diagram-card .p-5 {
+                padding: 1rem !important;
+            }
+            .diagram-card img {
+                width: 100%;
+                max-width: 100%;
+            }
         }
     </style>
 </head>

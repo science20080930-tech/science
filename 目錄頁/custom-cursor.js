@@ -1,5 +1,22 @@
 (function() {
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    function detectDeviceType() {
+        const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const finePointer = window.matchMedia('(pointer: fine)').matches;
+        const width = Math.min(window.innerWidth || 0, window.screen?.width || window.innerWidth || 0);
+        const userAgent = navigator.userAgent || '';
+        const mobileUA = /Android.*Mobile|iPhone|iPod|Windows Phone/i.test(userAgent);
+        const tabletUA = /iPad|Tablet|Android(?!.*Mobile)/i.test(userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/i.test(userAgent));
+
+        if (mobileUA || (coarsePointer && width <= 640)) return 'phone';
+        if (tabletUA || (coarsePointer && width <= 1180)) return 'tablet';
+        if (finePointer) return 'desktop';
+        return coarsePointer ? 'tablet' : 'desktop';
+    }
+
+    const deviceType = detectDeviceType();
+    const isTouchDevice = deviceType === 'phone' || deviceType === 'tablet';
+    document.documentElement.dataset.device = deviceType;
+    document.documentElement.classList.add(`device-${deviceType}`);
 
     function createStarSvg(className, gradientId) {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -30,13 +47,14 @@
         touchStyle.textContent = `
             .polaris-tap {
                 position: fixed;
-                width: 34px;
-                height: 34px;
+                width: 28px;
+                height: 28px;
                 pointer-events: none;
                 z-index: 10000;
                 mix-blend-mode: screen;
                 filter: drop-shadow(0 0 10px rgba(173, 255, 244, 0.95));
                 animation: polarisTap 0.58s ease-out forwards;
+                will-change: transform, opacity;
             }
 
             .polaris-star-core {
@@ -44,18 +62,19 @@
             }
 
             @keyframes polarisTap {
-                0% { opacity: 0; transform: scale(0.45); }
-                22% { opacity: 1; transform: scale(1); }
-                100% { opacity: 0; transform: scale(1.65); }
+                0% { opacity: 1; transform: translate(-50%, -50%) scale(0.72); }
+                45% { opacity: 0.92; transform: translate(-50%, -50%) scale(1); }
+                100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
             }
         `;
         document.head.appendChild(touchStyle);
 
         let tapId = 0;
         window.addEventListener('pointerdown', event => {
+            if (!event.isPrimary) return;
             const tap = createStarSvg('polaris-tap', `starCoreTap${tapId++}`);
-            tap.style.left = `${event.clientX - 17}px`;
-            tap.style.top = `${event.clientY - 17}px`;
+            tap.style.left = `${event.clientX}px`;
+            tap.style.top = `${event.clientY}px`;
             document.body.appendChild(tap);
             tap.addEventListener('animationend', () => tap.remove(), { once: true });
         }, { passive: true });
