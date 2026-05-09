@@ -193,7 +193,7 @@
                         <div class="p-5 flex flex-col gap-4">
                             <div class="meta-row" id="previewTags"></div>
                             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                <p class="text-green-100/70 leading-7">點左側筆記會切換這裡的完整頁面縮圖，按下 OPEN NOTE 進入正式頁面。</p>
+                                <p class="text-green-100/70 leading-7">連續點同一筆記兩次才會進入正式頁面；切換到其他筆記後，再點回來會先顯示縮圖預覽。</p>
                                 <a id="openNoteLink" href="生物筆記1/cell-structure.html" class="return-btn px-5 py-2.5 rounded-full orbitron text-xs tracking-[0.2em] text-green-300 text-center">OPEN NOTE</a>
                             </div>
                         </div>
@@ -223,13 +223,16 @@
         const previewFrame = document.getElementById('previewFrame');
         const previewTags = document.getElementById('previewTags');
         const openNoteLink = document.getElementById('openNoteLink');
+        let activeNoteIndex = -1;
+        let lastClickedNoteIndex = -1;
 
         function renderTags(tags) {
             previewTags.innerHTML = tags.map(tag => `<span class="meta-chip orbitron">${tag}</span>`).join('');
         }
 
-        function selectNote(index) {
+        function showPreview(index, markActive = true) {
             const note = notes[index];
+            if (markActive) activeNoteIndex = index;
             previewCode.textContent = note.code;
             previewTitle.textContent = note.title;
             previewDescription.textContent = note.description;
@@ -237,13 +240,14 @@
             openNoteLink.href = note.url;
             renderTags(note.tags);
             document.querySelectorAll('.note-item').forEach((button, buttonIndex) => {
-                button.classList.toggle('is-active', buttonIndex === index);
-                button.setAttribute('aria-pressed', buttonIndex === index ? 'true' : 'false');
+                const isActive = markActive && buttonIndex === index;
+                button.classList.toggle('is-active', isActive);
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
         }
 
         noteList.innerHTML = notes.map((note, index) => `
-            <button class="note-item ${index === 0 ? 'is-active' : ''}" type="button" data-note-index="${index}" aria-pressed="${index === 0 ? 'true' : 'false'}">
+            <button class="note-item" type="button" data-note-index="${index}" aria-pressed="false">
                 <div class="orbitron text-xs tracking-[0.22em] text-green-300/70 mb-2">${note.code}</div>
                 <div class="text-white text-xl font-bold mb-2">${note.title}</div>
                 <p class="text-green-100/60 text-sm leading-6">${note.description}</p>
@@ -253,10 +257,16 @@
         noteList.addEventListener('click', event => {
             const button = event.target.closest('.note-item');
             if (!button) return;
-            selectNote(Number(button.dataset.noteIndex));
+            const noteIndex = Number(button.dataset.noteIndex);
+            if (noteIndex === lastClickedNoteIndex) {
+                window.location.href = notes[noteIndex].url;
+                return;
+            }
+            lastClickedNoteIndex = noteIndex;
+            showPreview(noteIndex);
         });
 
-        selectNote(0);
+        showPreview(0, false);
     </script>
 </body>
 </html>
