@@ -3,17 +3,19 @@
     // 建立 canvas
     const canvas = document.createElement('canvas');
     canvas.id = 'bg-particles';
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;pointer-events:none;';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;';
     document.body.prepend(canvas);
 
     // 建立掃描線
     const scanlines = document.createElement('div');
+    scanlines.className = 'bg-scanlines';
     scanlines.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,100,255,0.008) 2px,rgba(0,100,255,0.008) 4px);z-index:-1;pointer-events:none;';
     document.body.prepend(scanlines);
 
     // 建立故障閃爍層
     const glitchEl = document.createElement('div');
-    glitchEl.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;opacity:0;mix-blend-mode:screen;';
+    glitchEl.className = 'bg-glitch-overlay';
+    glitchEl.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0;mix-blend-mode:screen;';
     document.body.appendChild(glitchEl);
 
     const ctx = canvas.getContext('2d');
@@ -122,6 +124,22 @@
     // 故障特效
     const style = document.createElement('style');
     style.textContent = `
+        body {
+            isolation: isolate;
+        }
+        body > main,
+        body > header,
+        body > nav,
+        body > section,
+        body > footer {
+            position: relative;
+            z-index: 2;
+        }
+        #bg-particles,
+        .bg-scanlines,
+        .bg-glitch-overlay {
+            pointer-events: none !important;
+        }
         @keyframes bgGlitchFlash {
             0% { opacity: 0; }
             20% { opacity: 1; background: linear-gradient(90deg, transparent 30%, rgba(0,100,255,0.08) 30.5%, transparent 31%); }

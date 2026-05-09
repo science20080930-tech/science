@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太陽星雲學說 - Earth Science Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../custom-cursor.css">
+    <link rel="stylesheet" href="../../mobile-layout.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        :root {
+            --bg: #050a1a;
+            --accent: #ffd740;
+            --accent-2: #00e5ff;
+            --panel: rgba(8, 14, 34, 0.88);
+            --line: rgba(255, 226, 126, 0.24);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 25% 0%, rgba(255, 215, 64, 0.18), transparent 34%), var(--bg);
+            color: #fff8e0;
+            font-family: 'Noto Sans TC', sans-serif;
+            overflow-x: hidden;
+        }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .grid-bg {
+            position: fixed; inset: 0; z-index: -3;
+            background-image:
+                linear-gradient(rgba(255,215,64,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,215,64,0.025) 1px, transparent 1px);
+            background-size: 58px 58px;
+        }
+        .glow-orb {
+            position: fixed; border-radius: 50%; filter: blur(120px); z-index: -2; opacity: 0.12;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+        .glow-orb-1 { width: 520px; height: 520px; background: #ffd740; top: -180px; right: -130px; }
+        .glow-orb-2 { width: 460px; height: 460px; background: #00aaff; bottom: -190px; left: -120px; animation-delay: -4s; }
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -20px) scale(1.08); }
+            100% { transform: translate(-20px, 30px) scale(0.96); }
+        }
+        .return-btn, .chip {
+            border: 1px solid rgba(255,215,64,0.34);
+            background: rgba(255,215,64,0.07);
+            backdrop-filter: blur(10px);
+        }
+        .return-btn { transition: all .25s; }
+        .return-btn:hover {
+            border-color: var(--accent);
+            background: rgba(255,215,64,0.15);
+            box-shadow: 0 0 22px rgba(255,215,64,.24);
+        }
+        .panel {
+            background: var(--panel);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px;
+            box-shadow: 0 24px 80px rgba(0,0,0,.24);
+            backdrop-filter: blur(18px);
+        }
+        main {
+            position: relative;
+            z-index: 20;
+            isolation: isolate;
+        }
+        .image-card img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .stage-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .image-card {
+            position: relative;
+            z-index: 30;
+            isolation: isolate;
+            background: linear-gradient(180deg, rgba(35, 29, 13, .92), rgba(7, 14, 31, .92));
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            min-width: 0;
+        }
+        .image-card img {
+            position: relative;
+            z-index: 31;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            background: #040914;
+        }
+        .section-title {
+            color: var(--accent);
+            letter-spacing: .16em;
+            font-size: .78rem;
+            font-weight: 800;
+        }
+        .flow-step {
+            border: 1px solid rgba(255,215,64,.2);
+            background: rgba(255,215,64,.055);
+            border-radius: 14px;
+            padding: 1.15rem;
+            min-height: 220px;
+        }
+        .fade-in { animation: fadeIn .55s ease-out both; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        html.device-phone body,
+        html.device-tablet body {
+            touch-action: manipulation;
+        }
+        html.device-tablet .stage-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+        html.device-phone .stage-grid {
+            grid-template-columns: 1fr;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem !important; }
+            .panel { border-radius: 16px; }
+            .stage-grid { grid-template-columns: 1fr; }
+            .flow-step { min-height: 0; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="grid-bg"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <main class="max-w-7xl mx-auto fade-in">
+        <nav class="flex items-center justify-between gap-4 mb-8">
+            <a href="../earth.html" class="return-btn px-5 py-2.5 rounded-full orbitron text-xs tracking-[0.2em] text-yellow-300 flex items-center gap-2">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                EARTH
+            </a>
+            <div class="orbitron text-xs tracking-[0.2em] text-yellow-300/60">NOTE 01</div>
+        </nav>
+
+        <section class="panel p-6 md:p-9 mb-6">
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="chip rounded-full px-4 py-1.5 text-xs text-yellow-100 orbitron tracking-[0.16em]">GSAT EARTH SCIENCE</span>
+                <span class="chip rounded-full px-4 py-1.5 text-xs text-cyan-100 orbitron tracking-[0.16em]">SOLAR NEBULA THEORY</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-5">太陽星雲學說</h1>
+            <p class="text-yellow-100/75 text-base md:text-lg leading-8 max-w-4xl">
+                太陽星雲學說用來解釋太陽系的形成：原始星雲因重力收縮而旋轉加快，逐漸扁平成盤，中心形成太陽，盤面中的物質經吸積作用形成微行星與行星。
+            </p>
+        </section>
+
+        <section class="stage-grid mb-6" aria-label="太陽星雲學說四階段圖解">
+            <article class="image-card">
+                <img src="assets/initial-solar-nebula.png" alt="原始太陽星雲，氣體與塵埃雲開始受重力收縮">
+                <div class="p-5">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STAGE 01</div>
+                    <h3 class="text-white font-bold text-lg mb-2">原始太陽星雲</h3>
+                    <p class="text-yellow-100/70 leading-7">
+                        太陽系最早是一團由氣體與塵埃組成的星雲，主要成分是氫、氦，並混有岩石與金屬微粒。星雲可能受到附近超新星爆炸的震波擾動，使物質被壓縮而開始聚集；也可能因星雲本身的重力不穩定，逐漸向內塌縮。這個階段的重點是「重力開始勝過向外擴散」，星雲密度提高，成為太陽系形成的起點。
+                    </p>
+                </div>
+            </article>
+            <article class="image-card">
+                <img src="assets/protoplanetary-disk-a.png" alt="星雲收縮後形成扁平的原行星盤">
+                <div class="p-5">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STAGE 02</div>
+                    <h3 class="text-white font-bold text-lg mb-2">旋轉成盤</h3>
+                    <p class="text-yellow-100/70 leading-7">
+                        星雲塌縮時，原本微小的旋轉會因角動量守恆而變得更快，就像旋轉中的人收回手臂會轉得更快。大量物質往中心集中，使中心區域溫度與密度升高，形成原始太陽；外圍物質則因旋轉而不會直接落入中心，逐漸攤平成扁平的原行星盤。行星公轉方向大多相同，且軌道大致位在同一平面，正是由同一旋轉盤面形成所留下的特徵。
+                    </p>
+                </div>
+            </article>
+            <article class="image-card">
+                <img src="assets/planetesimal-disk.png" alt="原行星盤中岩塊與塵埃碰撞吸積形成微行星">
+                <div class="p-5">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STAGE 03</div>
+                    <h3 class="text-white font-bold text-lg mb-2">微行星吸積</h3>
+                    <p class="text-yellow-100/70 leading-7">
+                        原行星盤中的塵埃、金屬微粒、岩塊與冰粒不斷碰撞，有些碰撞會讓物質黏合，形成越來越大的團塊，這個過程稱為吸積作用。團塊變大後，重力也會增強，更容易吸引周圍物質，進一步長成微行星與原行星。靠近太陽的區域溫度高，冰與氣體不容易保留，因此較容易形成岩石質的類地行星；較遠處溫度低，可保留冰與氣體，形成類木行星的核心與厚大氣。
+                    </p>
+                </div>
+            </article>
+            <article class="image-card">
+                <img src="assets/solar-system.png" alt="太陽系行星繞太陽公轉的完成階段">
+                <div class="p-5">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STAGE 04</div>
+                    <h3 class="text-white font-bold text-lg mb-2">太陽系形成</h3>
+                    <p class="text-yellow-100/70 leading-7">
+                        當中心原始太陽溫度夠高，開始進行核融合後，太陽風會把部分殘餘氣體與塵埃吹散。盤面中已成長的原行星逐漸清除各自軌道附近的物質，形成今天的行星系統。剩餘沒有併入行星的物質，可能成為小行星、彗星、衛星或其他小天體。這個階段要能連回觀察證據：行星大多同向公轉、軌道近似共平面，符合由同一旋轉星雲盤形成的結果。
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <section class="panel p-6 md:p-8">
+            <div class="section-title orbitron mb-3">FORMATION FLOW</div>
+            <h2 class="text-3xl md:text-4xl font-black text-white mb-6">太陽系形成四步驟</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <article class="flow-step">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STEP 01</div>
+                    <h3 class="text-white font-bold text-lg mb-3">星雲開始塌縮</h3>
+                    <p class="text-yellow-100/75 leading-7">
+                        原始星雲由氣體與塵埃組成，主要成分是氫與氦，也含有岩石、金屬等微粒。當附近超新星爆炸的震波壓縮星雲，或星雲本身因重力不穩定而聚集時，局部密度升高，物質開始向中心塌縮。
+                    </p>
+                </article>
+                <article class="flow-step">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STEP 02</div>
+                    <h3 class="text-white font-bold text-lg mb-3">中心形成原始太陽</h3>
+                    <p class="text-yellow-100/75 leading-7">
+                        星雲塌縮使大量物質往中心集中，中心區域的密度與溫度不斷上升，逐漸形成原始太陽。外圍物質因旋轉而不會全部落入中心，開始在中心周圍留下旋轉中的物質盤。
+                    </p>
+                </article>
+                <article class="flow-step">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STEP 03</div>
+                    <h3 class="text-white font-bold text-lg mb-3">扁平成原行星盤</h3>
+                    <p class="text-yellow-100/75 leading-7">
+                        星雲收縮時角動量守恆，旋轉速度變快，物質逐漸攤平成扁平的原行星盤。這個盤面提供了行星形成的場所，也留下行星大多同方向公轉、軌道近似共平面的特徵。
+                    </p>
+                </article>
+                <article class="flow-step">
+                    <div class="orbitron text-yellow-300 text-xs tracking-[0.18em] mb-3">STEP 04</div>
+                    <h3 class="text-white font-bold text-lg mb-3">吸積形成行星</h3>
+                    <p class="text-yellow-100/75 leading-7">
+                        原行星盤中的塵埃、冰粒與岩塊互相碰撞並黏合，逐漸形成微行星，再合併成原行星與行星。中心太陽開始核融合後，太陽風吹散殘餘氣體，剩餘物質則形成小行星、彗星與衛星等小天體。
+                    </p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="../../custom-cursor.js"></script>
+    <script src="../../bg-effects.js"></script>
+</body>
+</html>
